@@ -1,6 +1,6 @@
 import gradio
 
-from magis.chat import MagisAgent, agent_builder
+from magis.chat import MagisAgent, agent_creator
 
 
 def agent_query(agent: MagisAgent):
@@ -12,7 +12,7 @@ def agent_query(agent: MagisAgent):
 
 if __name__ == "__main__":
     # agent = generate_agent()
-    agent = agent_builder()
+    agent = agent_creator()
     demo = gradio.ChatInterface(
         title="magiStral",
         fn=agent_query(agent),

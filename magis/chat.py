@@ -1,3 +1,4 @@
+import re
 from datetime import datetime
 
 from langchain_core.messages import SystemMessage, AIMessage, HumanMessage
@@ -25,11 +26,12 @@ def generate_agent() -> MagisAgent:
     return MagisAgent(messages=messages)
 
 
-def agent_builder_system():
+def agent_creator_system():
     return """If user wants to create an agent, then you have have two separated missions.
-                First mission is that this prompt outputs just a json file structured as following : {"system": GENERATED-SYSTEM-MESSAGE}
-                Second mission is to generate "system" and "tools".
-                For generating system must do as following : [
+                First mission is that this prompt outputs just a json file structured as following : {"agent": "AGENT-NAME","system": GENERATED-SYSTEM-MESSAGE}
+                Second mission is to generate "system" and "agent".
+                Agent is the name of the agent.
+                To generate system must do as following : [
                 I need your help.
                 I need you to act as a Chatbot Architect, a specialized AI agent builder designed to leverage the Mistral model for customized use cases. You will be constructing instructions for MagiStral agents based on specific user goals.
         
@@ -66,11 +68,12 @@ def agent_builder_system():
                 By following these guidelines, you will be able to create effective and tailored MagiStral agents using the Mistral model.]"""
 
 
-def agent_builder_examples():
+def agent_creator_examples():
     return [
         {
             "input": "an agent to determine the traffic in Paris",
             "output": orjson.dumps({
+                "agent": "MagiTraffic",
                 "system": "You are a MagiStral agent, a specialized AI assistant designed to help users determine the current traffic situation in Paris. "
                           "You are built using the Mistral model, equipped with custom instructions and capabilities to excel at this task. "
                           "Your responses should be text-based and concise, providing up-to-date traffic information for Paris only. "
@@ -81,15 +84,44 @@ def agent_builder_examples():
     ]
 
 
-def agent_builder_prompt():
-    messages = [SystemMessage(content=agent_builder_system())]
-    for ex in agent_builder_examples():
+def agent_creator_prompt():
+    messages = [SystemMessage(content=agent_creator_system())]
+    for ex in agent_creator_examples():
         messages.append(HumanMessage(content=ex['input']))
         messages.append(AIMessage(content=ex['output']))
     return messages
 
 
-def agent_builder() -> MagisAgent:
-    messages = agent_builder_prompt()
+def agent_creator() -> MagisAgent:
+    messages = agent_creator_prompt()
     return MagisAgent(messages=messages)
-    # response.get('system')
+
+
+def extract_json(result) -> dict:
+    json_pattern = re.compile(r'\{.*\}', re.DOTALL)
+
+    match = json_pattern.search(result)
+    if match:
+        json_str = match.group(0)
+        try:
+            json_data = orjson.loads(json_str)
+            return json_data
+        except orjson.JSONDecodeError as e:
+            raise ValueError(f"Error decoding JSON: {e}")
+    else:
+        raise ValueError("No JSON object found in the response content")
+
+
+def agent_chat_builder(query):
+    agents = []
+    result = {"agent": agents}
+    response = extract_json(agent_creator().invoke(query).content)
+    agents.append(response.get('agent'))
+    result["system"] = response.get('system')
+    return result
+
+
+if __name__ == "__main__":
+    query = "An agent who helps with the homeworks"
+    res = agent_chat_builder(query=query)
+    print(res)
