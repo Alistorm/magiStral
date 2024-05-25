@@ -1,6 +1,4 @@
-from datetime import datetime
-
-from langchain_core.messages import SystemMessage, AIMessage
+from langchain_core.messages import SystemMessage
 from langchain_groq import ChatGroq
 from langchain_mistralai import ChatMistralAI
 
@@ -16,10 +14,14 @@ class MagisAgent:
         return self.messages[-1]
 
 
-def generate_agent() -> MagisAgent:
+def generate_magis_agent() -> MagisAgent:
     messages = [
-        SystemMessage(f"You are a helpful agent called Jarvis.Today is {datetime.now().isoformat()}."),
-        AIMessage("Hello dude my name is Jarvis! How can I help ?")
+        SystemMessage("""Today is {datetime.now().isoformat()}.
+        Welcome to the chat! Here, you can have a conversation about a wide range of topics. But that's not all - you also have the ability to create your own special agents to assist with specific tasks.
+
+To create an agent, simply type the command 'create agent' followed by the name of your agent and the task you'd like them to help with. For example, 'create agent DataMaster data analysis'.
+
+Once your agent is created, you can call upon them at any time during the chat by typing their name. They'll be ready and waiting to assist you with their assigned task.""")
     ]
     return MagisAgent(messages=messages)
 
@@ -52,14 +54,14 @@ def agent_builder() -> MagisAgent:
     4. **MagiStral Instructions:** After gathering the necessary information, construct the MagiStral agent's instructions using the Mistral model's capabilities. These instructions should be comprehensive, covering the agent's communication style, task execution, and response format. You should focus on utilizing the Mistral model's strengths to tailor the agent to the user's specific goal.
 
     **Example Structure:**
-    "You are a MagiStral agent, a specialized AI assistant designed to [agent's purpose]. You are built using the Mistral model, equipped with custom instructions and capabilities to excel at [agent's task]. Your responses should be [response format] and [creative level] while adhering to the following guidelines: [guidelines]. "
+    {“systeme”: "You are a MagiStral agent, a specialized AI assistant designed to [agent's purpose]. You are built using the Mistral model, equipped with custom instructions and capabilities to excel at [agent's task]. Your responses should be [response format] and [creative level] while adhering to the following guidelines: [guidelines]. "}
 
 
     **Example:**
 
     If the user's goal is "Help users write creative stories about historical figures," the agent's instructions could be:
 
-    "An agent, a specialized AI assistant designed to help users write creative stories about historical figures. You are equipped with custom instructions and capabilities to generate compelling narratives. Your responses should be in the form of detailed story outlines, incorporating elements of historical accuracy and creative storytelling. Feel free to explore different perspectives and scenarios, but be mindful of maintaining historical integrity."
+    {“systeme”: "An agent, a specialized AI assistant designed to help users write creative stories about historical figures. You are equipped with custom instructions and capabilities to generate compelling narratives. Your responses should be in the form of detailed story outlines, incorporating elements of historical accuracy and creative storytelling. Feel free to explore different perspectives and scenarios, but be mindful of maintaining historical integrity."}
 
 
     **Specific Instructions:**
@@ -69,6 +71,8 @@ def agent_builder() -> MagisAgent:
     * Tailor the instructions to the user's specific needs and preferences.
     * Ensure the instructions clearly define the agent's role, expected output, and any limitations or constraints.
 
-    By following these guidelines, you will be able to create effective and tailored MagiStral agents using the Mistral model."""
-    messages = [SystemMessage(content=prompt),]
+    By following these guidelines, you will be able to create effective and tailored MagiStral agents using the Mistral model.
+    Respond only with the JSON object.
+"""
+    messages = [SystemMessage(content=prompt)]
     return MagisAgent(messages=messages)
