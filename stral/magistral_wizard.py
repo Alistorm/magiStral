@@ -22,7 +22,7 @@ def download_webpage(url):
     response = requests.get(url)
     return response.text
 
-api_key = "yKlZMUnK16MJjFydtodYJSTRgIg7ZyG7"
+api_key = "<insert Mistral API key>"
 model = "mistral-large-latest"
 
 client = MistralClient(api_key=api_key)
