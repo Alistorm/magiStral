@@ -1,3 +1,6 @@
+![Logo](../images/MagisTralLogo.png)
+![Overview](../images/Overview.png)
+
 ## Inspiration
 
 - the project that won the previous Mistral SF hackathon: a prompt engineering assistant powered by AI, [l'Invite Parfaite](https://devpost.com/software/l-invite-parfaite-the-perfect-prompt): if it has been done for prompts, it can be done for implementing Mistral functions too.
