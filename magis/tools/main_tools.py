@@ -1,3 +1,5 @@
+from langchain_core.messages import SystemMessage, HumanMessage
+from langchain_groq import ChatGroq
 from mistralai.client import MistralClient
 from mistralai.models.chat_completion import ChatMessage
 from orjson import orjson
@@ -29,14 +31,14 @@ def agent_caller_tool(chat):
     def agent_caller(agent_name: str, prompt: str) -> str:
         """Call an agent and return it's response."""
         agent = chat.agents[agent_name]
-        client = MistralClient()
+        client = ChatGroq()
         messages = [
-            ChatMessage(role='system', content=agent['system']),
-            ChatMessage(role='user', content=prompt)
+            SystemMessage(content=agent['system']),
+            HumanMessage(content=prompt)
         ]
-        response = client.chat(model=chat.model, messages=messages)
+        response = client.invoke(messages)
         print(f'Called agent {agent} with {prompt}')
-        return response.choices[0].message.content
+        return response.content
 
     return "agent_caller", description, agent_caller
 
