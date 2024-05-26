@@ -1,5 +1,9 @@
 ![Logo](images/MagisTralLogo.png)
-![Overview](images/Overview.png)
+
+## Overview
+
+![Wizard](images/Overview.png)
+![Experts agents](images/OverviewAgents.png)
 
 ## Inspiration
 
@@ -35,3 +39,8 @@
 ## Other idea we had
 - Integrate vision
 - Prune and quantize the Mistral open-source model for targeting mobile inference
+
+## Screenshots/Demos
+
+![Wizard](images/UI.png)
+![Experts agents](images/DemoAgents.png)
