@@ -34,7 +34,7 @@ def agent_caller_tool(chat):
             ChatMessage(role='system', content=agent['system']),
             ChatMessage(role='user', content=prompt)
         ]
-        response = client.chat(model="mistral-large-latest", messages=messages)
+        response = client.chat(model=chat.model, messages=messages)
         print(f'Called agent {agent} with {prompt}')
         return response.choices[0].message.content
 

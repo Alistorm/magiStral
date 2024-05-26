@@ -58,4 +58,5 @@ class LeMagisChat:
                 result = self.tool_by_name.get(fn.name)(**params)
                 return result
         except Exception as e:
+            print(e)
             return json.dumps({'error': str(e)})
