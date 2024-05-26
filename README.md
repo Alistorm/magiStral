@@ -44,3 +44,5 @@
 
 ![Wizard](images/UI.png)
 ![Experts agents](images/DemoAgents.png)
+![Experts agents 1](images/DemoAgents2.png)
+![Experts agents 2](images/DemosAgents3.png)
