@@ -1,6 +1,6 @@
 # -----------------------------------------------------------
 # Mistral AI Paris Hackathon
-# Date: 25/05/2024
+# Date: 25/05/2024, 26/05/2024
 # Author: Wilfred Doré
 # -----------------------------------------------------------
 
@@ -19,14 +19,19 @@ class ExternalAPI:
     def __init__(self):
         self.swagger_url = ""
         self.api_key = ""
+        self.connector_code = ""
 
 external_api = ExternalAPI()
 
 def show(event: ValueChangeEventArguments):
     name = type(event.sender).__name__
 
+
+
 def go():
-    MISTRAL_API_KEY = "<Mistral API key>"
+    global ui_code
+
+    MISTRAL_API_KEY = "<insert your Mistral API key>"
     MISTRAL_DOC_URL = "https://docs.mistral.ai/capabilities/function_calling/"
     SWAGGER_URL = external_api.swagger_url
     EXTERNAL_API_KEY = external_api.api_key
@@ -73,15 +78,19 @@ def go():
     code = code.replace("```python", "")
     code = code.replace("```", "")
     print(code)
-    ui.code(code)
-
+    # TODO: fix indentation error on the code
+    # TODO: for the moment, the browser need to be refresh on client side
+    ui_code.value = code
+    ui_code.update()
+    
 
 ui.page_title('MagiStral Wizard')
 ui.label('MagiStral Wizard').style('color: #6E93D6; font-size: 200%; font-weight: 300')
-ui.label('This universal convert helps you to generate your Mistral AI function specification and implementation!')
+ui.label('Generate code for Mistral AI by Mistral AI')
 ui.input('OpenAPI Specification (Swagger) YAML', on_change=show).style('width: 400px').bind_value(external_api, 'swagger_url')
 ui.input('API key', on_change=show).style('width: 400px').bind_value(external_api, 'api_key')
-ui.button('Generate Mistral AI function tool', on_click=go)
+ui.button('Generate Mistral AI function', on_click=go)
+ui_code = ui.codemirror('# The function specification and implementation will be generated here', language='python')
 ui.run()
 
 
