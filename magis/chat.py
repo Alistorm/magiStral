@@ -1,3 +1,4 @@
+import time
 from datetime import datetime
 
 from langchain_core.messages import SystemMessage, AIMessage
@@ -14,7 +15,6 @@ class MagisAgent:
         self.messages.append(message)
         self.messages.append(self.chat.invoke(self.messages))
         return self.messages[-1]
-
 
 def generate_agent() -> MagisAgent:
     messages = [

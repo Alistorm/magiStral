@@ -1,3 +1,5 @@
+from multiprocessing import cpu_count, Pool
+
 import gradio
 
 from magis.chat import MagisAgent, agent_builder
@@ -5,7 +7,10 @@ from magis.chat import MagisAgent, agent_builder
 
 def agent_query(agent: MagisAgent):
     def query(message, history):
-        return agent.invoke(message['text']).content
+        if message.get('files'):
+            with Pool(processes=cpu_count()) as p:
+                p.map()
+        return agent.invoke(message['text'])
 
     return query
 
