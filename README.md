@@ -1,5 +1,5 @@
-![Logo](../images/MagisTralLogo.png)
-![Overview](../images/Overview.png)
+![Logo](images/MagisTralLogo.png)
+![Overview](images/Overview.png)
 
 ## Inspiration
 
